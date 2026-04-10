@@ -31,133 +31,13 @@
       overflow: hidden;
     }
 
-    /* Layout: canvas full screen, texto encima a la izq */
     .hero-layout {
       position: relative;
       width: 100%;
       height: 100%;
     }
 
-    /* ============ TEXTO IZQUIERDA (encima del canvas) ============ */
-    .hero-text {
-      position: absolute;
-      left: 4vw;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 20;
-      max-width: 420px;
-      will-change: transform, opacity;
-    }
-
-    .hero-text .line {
-      display: block;
-      overflow: hidden;
-    }
-
-    .hero-text .line-inner {
-      display: block;
-      transform: translateY(100%);
-      animation: revealLine 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    .hero-text .line:nth-child(1) .line-inner { animation-delay: 0.2s; }
-    .hero-text .line:nth-child(2) .line-inner { animation-delay: 0.35s; }
-    .hero-text .line:nth-child(3) .line-inner { animation-delay: 0.5s; }
-
-    @keyframes revealLine {
-      to { transform: translateY(0); }
-    }
-
-    .hero-text h1 {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(2.2rem, 4.5vw, 5rem);
-      font-weight: 900;
-      line-height: 1.05;
-      letter-spacing: -1px;
-      color: #4b5563;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));
-    }
-
-    .hero-text h1 .gold {
-      background: linear-gradient(
-        135deg,
-        #4b5563 0%,
-        #9ca3af 25%,
-        #374151 50%,
-        #6b7280 75%,
-        #4b5563 100%
-      );
-      background-size: 200% 200%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: shimmer 4s ease-in-out infinite;
-    }
-
-    @keyframes shimmer {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-
-    .hero-text h1 .explota {
-      display: inline-block;
-      font-style: italic;
-      background: linear-gradient(
-        135deg,
-        #bf953f 0%,
-        #fcf6ba 50%,
-        #b38728 100%
-      );
-      background-size: 200% 200%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: shimmer 3s ease-in-out infinite;
-      position: relative;
-    }
-
-    /* Glow detras de EXPLOTAN */
-    .hero-text h1 .explota::after {
-      content: 'EXPLOTAN!';
-      position: absolute;
-      top: 0; left: 0;
-      font-style: italic;
-      background: linear-gradient(135deg, #bf953f, #fcf6ba);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: blur(20px);
-      opacity: 0.3;
-      z-index: -1;
-    }
-
-    .hero-text .subtitle {
-      margin-top: 1.5rem;
-      font-size: clamp(0.85rem, 1.2vw, 1.05rem);
-      font-weight: 300;
-      color: #6b7280;
-      letter-spacing: 0.5px;
-      line-height: 1.6;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.1);
-      opacity: 0;
-      transform: translateY(15px);
-      animation: fadeUp 0.8s ease forwards 0.8s;
-    }
-
-    .hero-text .divider {
-      width: 50px;
-      height: 2px;
-      background: linear-gradient(90deg, #bf953f, #fcf6ba, #b38728);
-      margin-top: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards 1s;
-    }
-
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ============ CANVAS DERECHA ============ */
+    /* ============ CANVAS ============ */
     .canvas-wrapper {
       position: absolute;
       top: 0; left: 0;
@@ -171,6 +51,179 @@
       object-fit: cover;
       object-position: center top;
       filter: drop-shadow(0 20px 60px rgba(0,0,0,0.15));
+    }
+
+    /* ============ SCROLL TEXTS (aparecen/desaparecen con scroll) ============ */
+    .scroll-text {
+      position: absolute;
+      z-index: 20;
+      opacity: 0;
+      transform: translateY(40px);
+      will-change: transform, opacity;
+      transition: none;
+      pointer-events: none;
+    }
+
+    /* --- Texto 1: Titulo principal (izquierda) --- */
+    .text-1 {
+      left: 4vw;
+      top: 50%;
+      transform: translateY(-50%);
+      max-width: 420px;
+    }
+
+    .text-1 h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.2rem, 4.5vw, 5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -1px;
+      color: #4b5563;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));
+    }
+
+    .text-1 h1 .gold {
+      background: linear-gradient(135deg, #4b5563 0%, #9ca3af 25%, #374151 50%, #6b7280 75%, #4b5563 100%);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s ease-in-out infinite;
+    }
+
+    .text-1 h1 .explota {
+      display: inline-block;
+      font-style: italic;
+      background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 50%, #b38728 100%);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s ease-in-out infinite;
+      position: relative;
+    }
+
+    .text-1 h1 .explota::after {
+      content: 'EXPLOTAN!';
+      position: absolute;
+      top: 0; left: 0;
+      font-style: italic;
+      background: linear-gradient(135deg, #bf953f, #fcf6ba);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: blur(20px);
+      opacity: 0.3;
+      z-index: -1;
+    }
+
+    .text-1 .divider {
+      width: 50px;
+      height: 2px;
+      background: linear-gradient(90deg, #bf953f, #fcf6ba, #b38728);
+      margin-top: 1.5rem;
+    }
+
+    .text-1 .subtitle {
+      margin-top: 1.5rem;
+      font-size: clamp(0.85rem, 1.2vw, 1.05rem);
+      font-weight: 300;
+      color: #6b7280;
+      line-height: 1.6;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    /* --- Texto 2: Servicios (derecha) --- */
+    .text-2 {
+      right: 5vw;
+      top: 50%;
+      text-align: right;
+      max-width: 400px;
+    }
+
+    .text-2 h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.8rem, 3.5vw, 3.5rem);
+      font-weight: 900;
+      color: #374151;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.1));
+    }
+
+    .text-2 p {
+      margin-top: 1rem;
+      font-size: clamp(0.85rem, 1.1vw, 1rem);
+      font-weight: 300;
+      color: #6b7280;
+      line-height: 1.7;
+    }
+
+    .text-2 .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 1.2rem;
+      justify-content: flex-end;
+    }
+
+    .text-2 .tag {
+      padding: 6px 14px;
+      background: rgba(0,0,0,0.05);
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #4b5563;
+      letter-spacing: 0.5px;
+    }
+
+    /* --- Texto 3: CTA centro --- */
+    .text-3 {
+      left: 50%;
+      top: 50%;
+      text-align: center;
+      max-width: 600px;
+    }
+
+    .text-3 h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2rem, 4vw, 4rem);
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .text-3 h2 .gold-cta {
+      background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    .text-3 p {
+      margin-top: 1.2rem;
+      font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+      color: #6b7280;
+      font-weight: 300;
+    }
+
+    .text-3 .cta-btn {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 14px 40px;
+      background: linear-gradient(135deg, #bf953f, #b38728);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 20px rgba(179,135,40,0.3);
+      pointer-events: all;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
 
     /* ============ LOADER ============ */
@@ -187,10 +240,7 @@
       transition: opacity 0.6s ease;
     }
 
-    .loader.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
+    .loader.hidden { opacity: 0; pointer-events: none; }
 
     .loader-text {
       font-family: 'Playfair Display', serif;
@@ -204,16 +254,14 @@
     }
 
     .loader-bar-bg {
-      width: 180px;
-      height: 2px;
+      width: 180px; height: 2px;
       background: #e5e7eb;
       border-radius: 2px;
       overflow: hidden;
     }
 
     .loader-bar {
-      height: 100%;
-      width: 0%;
+      height: 100%; width: 0%;
       background: linear-gradient(90deg, #bf953f, #fcf6ba, #b38728);
       border-radius: 2px;
       transition: width 0.1s;
@@ -222,15 +270,13 @@
     /* ============ SCROLL INDICATOR ============ */
     .scroll-indicator {
       position: fixed;
-      bottom: 24px;
-      left: 50%;
+      bottom: 24px; left: 50%;
       transform: translateX(-50%);
       z-index: 100;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 6px;
-      will-change: opacity;
     }
 
     .scroll-indicator span {
@@ -271,36 +317,17 @@
       background: linear-gradient(90deg, #bf953f, #fcf6ba, #b38728);
       z-index: 1000;
       width: 0%;
-      will-change: width;
     }
 
     /* ============ RESPONSIVE ============ */
     @media (max-width: 768px) {
-      .hero-layout {
-        flex-direction: column;
-        justify-content: center;
-        padding: 2rem;
-        text-align: center;
-      }
-      .hero-text {
-        flex: none;
-        padding-right: 0;
-        margin-bottom: 2rem;
-      }
-      .hero-text .divider {
-        margin: 1.5rem auto 0;
-      }
-      .hero-text {
-        left: 50%;
-        top: auto;
-        bottom: 5%;
-        transform: translateX(-50%);
+      .text-1, .text-2, .text-3 {
+        left: 50% !important;
+        right: auto !important;
+        text-align: center !important;
         max-width: 90vw;
-        text-align: center;
       }
-      .hero-text .divider {
-        margin: 1rem auto 0;
-      }
+      .text-2 .tag-list { justify-content: center; }
     }
   </style>
 </head>
@@ -319,20 +346,39 @@
   <!-- HERO -->
   <header class="hero" id="hero">
     <div class="hero-layout">
-      <!-- TEXTO IZQUIERDA -->
-      <div class="hero-text" id="heroText">
-        <h1>
-          <span class="line"><span class="line-inner"><span class="gold">Creamos</span></span></span>
-          <span class="line"><span class="line-inner"><span class="gold">sitios web que</span></span></span>
-          <span class="line"><span class="line-inner"><span class="explota">EXPLOTAN!</span></span></span>
-        </h1>
-        <p class="subtitle">Desarrollo web premium para marcas que quieren destacar</p>
-        <div class="divider"></div>
-      </div>
-
-      <!-- CANVAS DERECHA -->
       <div class="canvas-wrapper">
         <canvas id="canvas"></canvas>
+      </div>
+
+      <!-- TEXTO 1: Titulo (0% - 30%) -->
+      <div class="scroll-text text-1" id="text1">
+        <h1>
+          <span class="gold">Creamos</span><br>
+          <span class="gold">sitios web que</span><br>
+          <span class="explota">EXPLOTAN!</span>
+        </h1>
+        <div class="divider"></div>
+        <p class="subtitle">Desarrollo web premium para marcas que quieren destacar</p>
+      </div>
+
+      <!-- TEXTO 2: Servicios (30% - 65%) -->
+      <div class="scroll-text text-2" id="text2">
+        <h2>Diseño que<br>convierte</h2>
+        <p>Sitios rapidos, modernos y optimizados para generar resultados reales</p>
+        <div class="tag-list">
+          <span class="tag">Landing Pages</span>
+          <span class="tag">E-Commerce</span>
+          <span class="tag">Apps Web</span>
+          <span class="tag">SEO</span>
+          <span class="tag">Branding</span>
+        </div>
+      </div>
+
+      <!-- TEXTO 3: CTA (65% - 100%) -->
+      <div class="scroll-text text-3" id="text3">
+        <h2><span class="gold-cta">Tu proximo proyecto<br>empieza aqui</span></h2>
+        <p>Agenda una llamada y llevemos tu marca al siguiente nivel</p>
+        <a href="#contacto" class="cta-btn">AGENDAR LLAMADA</a>
       </div>
     </div>
   </header>
@@ -350,57 +396,49 @@
     const FRAME_PATH = 'assets/frames/frame_';
     const FRAME_EXT = '.webp';
 
-    // ============ ELEMENTOS ============
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
-    const heroText = document.getElementById('heroText');
     const scrollIndicator = document.getElementById('scrollIndicator');
     const progressBar = document.getElementById('progressBar');
     const loader = document.getElementById('loader');
     const loaderBar = document.getElementById('loaderBar');
+
+    const text1 = document.getElementById('text1');
+    const text2 = document.getElementById('text2');
+    const text3 = document.getElementById('text3');
+
+    const isInIframe = window.self !== window.top;
 
     // ============ PRECARGAR FRAMES ============
     const frames = [];
     let loadedCount = 0;
     let allLoaded = false;
 
-    function padNumber(n) {
-      return String(n).padStart(4, '0');
-    }
+    function padNumber(n) { return String(n).padStart(4, '0'); }
 
     function preloadFrames() {
       for (let i = 1; i <= FRAME_COUNT; i++) {
         const img = new Image();
         img.src = FRAME_PATH + padNumber(i) + FRAME_EXT;
-
         img.onload = () => {
           loadedCount++;
-          const pct = (loadedCount / FRAME_COUNT) * 100;
-          loaderBar.style.width = pct + '%';
-
+          loaderBar.style.width = (loadedCount / FRAME_COUNT * 100) + '%';
           if (loadedCount === 1) {
             canvas.width = img.width;
             canvas.height = img.height;
             ctx.drawImage(img, 0, 0);
           }
-
           if (loadedCount === FRAME_COUNT) {
             allLoaded = true;
-            setTimeout(() => {
-              loader.classList.add('hidden');
-            }, 300);
+            setTimeout(() => loader.classList.add('hidden'), 300);
           }
         };
-
         frames.push(img);
       }
     }
 
-    // ============ SCROLL -> FRAME ============
+    // ============ SCROLL ============
     const TOTAL_SCROLL = () => document.querySelector('.scroll-spacer').offsetHeight - window.innerHeight;
-
-    // Detectar si esta en iframe (Wix)
-    const isInIframe = window.self !== window.top;
 
     let currentFrame = 0;
     let targetFrame = 0;
@@ -412,7 +450,6 @@
       targetFrame = Math.min(FRAME_COUNT - 1, Math.floor(scrollFraction * FRAME_COUNT));
     }
 
-    // Escuchar scroll del padre (Wix)
     window.addEventListener('message', (e) => {
       if (e.data && e.data.type === 'scroll') {
         externalProgress = clamp(e.data.progress, 0, 1);
@@ -423,13 +460,45 @@
     function clamp(v, min, max) { return Math.min(Math.max(v, min), max); }
     function lerp(a, b, t) { return a + (b - a) * t; }
 
-    function render() {
-      if (!allLoaded) {
-        requestAnimationFrame(render);
-        return;
+    // ============ TEXT ANIMATION ============
+    function animateText(el, p, enterStart, enterEnd, exitStart, exitEnd, fromX) {
+      // Enter: fade in + slide
+      const enterT = clamp((p - enterStart) / (enterEnd - enterStart), 0, 1);
+      // Exit: fade out + slide up
+      const exitT = clamp((p - exitStart) / (exitEnd - exitStart), 0, 1);
+
+      let opacity = 0;
+      let y = 40;
+      let x = fromX || 0;
+
+      if (enterT > 0 && exitT < 1) {
+        // Easing suave
+        const easeIn = 1 - Math.pow(1 - enterT, 3);
+        const easeOut = exitT * exitT;
+
+        opacity = easeIn * (1 - easeOut);
+        y = (1 - easeIn) * 40 + easeOut * -40;
+        x = fromX ? (1 - easeIn) * fromX : 0;
       }
 
-      // Smooth frame by frame — mas rapido en iframe
+      el.style.opacity = opacity;
+      el.style.transform = `translate(${x}px, ${y}px)`;
+      // Centrado especial para text-3
+      if (el === text3) {
+        el.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+      }
+      if (el === text2) {
+        el.style.transform = `translateY(calc(-50% + ${y}px))`;
+      }
+      if (el === text1) {
+        el.style.transform = `translateY(calc(-50% + ${y}px))`;
+      }
+    }
+
+    // ============ RENDER ============
+    function render() {
+      if (!allLoaded) { requestAnimationFrame(render); return; }
+
       const speed = isInIframe ? 0.3 : 0.1;
       smoothFrame = lerp(smoothFrame, targetFrame, speed);
       if (Math.abs(smoothFrame - targetFrame) < 0.5) smoothFrame = targetFrame;
@@ -450,20 +519,24 @@
       // Progress bar
       progressBar.style.width = (p * 100) + '%';
 
-      // Scroll indicator fade
+      // Scroll indicator
       scrollIndicator.style.opacity = clamp(1 - p * 8, 0, 0.7);
 
-      // Texto: fade out al scrollear
-      const textFade = clamp((p - 0.4) / 0.3, 0, 1);
-      heroText.style.opacity = 1 - textFade;
-      heroText.style.transform = `translateY(${textFade * -40}px)`;
+      // === TEXTOS: aparecen y desaparecen en fases ===
+      // Texto 1: entra 0%-8%, visible hasta 25%, sale 25%-35%
+      animateText(text1, p, 0.0, 0.08, 0.25, 0.35);
+
+      // Texto 2: entra 35%-45%, visible hasta 60%, sale 60%-70%
+      animateText(text2, p, 0.35, 0.45, 0.60, 0.70);
+
+      // Texto 3: entra 70%-80%, visible hasta 95%, sale 95%-100%
+      animateText(text3, p, 0.70, 0.80, 0.95, 1.0);
 
       requestAnimationFrame(render);
     }
 
     // ============ INIT ============
     if (isInIframe) {
-      // En Wix: quitar todo lo que capture scroll, el scroll viene del padre
       progressBar.style.display = 'none';
       scrollIndicator.style.display = 'none';
       document.querySelector('.scroll-spacer').style.display = 'none';
