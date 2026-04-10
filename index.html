@@ -408,7 +408,6 @@
     let externalProgress = 0;
 
     function onScroll() {
-      if (isInIframe) return; // En Wix, el scroll viene por postMessage
       const scrollFraction = window.scrollY / TOTAL_SCROLL();
       targetFrame = Math.min(FRAME_COUNT - 1, Math.floor(scrollFraction * FRAME_COUNT));
     }
@@ -463,9 +462,7 @@
 
     // ============ INIT ============
     if (isInIframe) {
-      // En Wix: quitar scroll spacer e indicator, el scroll viene del padre
-      document.querySelector('.scroll-spacer').style.display = 'none';
-      scrollIndicator.style.display = 'none';
+      // En Wix: quitar progress bar, el scroll funciona dentro del iframe
       progressBar.style.display = 'none';
     }
     window.addEventListener('scroll', onScroll, { passive: true });
