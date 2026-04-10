@@ -463,8 +463,12 @@
 
     // ============ INIT ============
     if (isInIframe) {
-      // En Wix: quitar progress bar, el scroll funciona dentro del iframe
+      // En Wix: quitar todo lo que capture scroll, el scroll viene del padre
       progressBar.style.display = 'none';
+      scrollIndicator.style.display = 'none';
+      document.querySelector('.scroll-spacer').style.display = 'none';
+      document.body.style.overflow = 'hidden';
+      document.body.style.height = '100vh';
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     preloadFrames();
