@@ -429,9 +429,10 @@
         return;
       }
 
-      // Smooth frame by frame
-      smoothFrame = lerp(smoothFrame, targetFrame, 0.1);
-      if (Math.abs(smoothFrame - targetFrame) < 0.4) smoothFrame = targetFrame;
+      // Smooth frame by frame — mas rapido en iframe
+      const speed = isInIframe ? 0.3 : 0.1;
+      smoothFrame = lerp(smoothFrame, targetFrame, speed);
+      if (Math.abs(smoothFrame - targetFrame) < 0.5) smoothFrame = targetFrame;
 
       const frameIndex = Math.round(clamp(smoothFrame, 0, FRAME_COUNT - 1));
 
