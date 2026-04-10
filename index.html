@@ -6,7 +6,7 @@
   <title>M&M WEB AGENCY</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -24,8 +24,6 @@
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100vh;
-      display: flex;
-      align-items: center;
       background: transparent;
       z-index: 1;
       overflow: hidden;
@@ -41,138 +39,124 @@
     .canvas-wrapper {
       position: absolute;
       top: 0; left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
     }
 
     canvas {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       object-fit: cover;
       object-position: center top;
       filter: drop-shadow(0 20px 60px rgba(0,0,0,0.15));
+      will-change: opacity;
     }
 
-    /* ============ SCROLL TEXTS (aparecen/desaparecen con scroll) ============ */
+    /* ============ OVERLAY oscuro que aparece con scroll ============ */
+    .overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      opacity: 0;
+      z-index: 5;
+      pointer-events: none;
+      will-change: opacity;
+    }
+
+    /* ============ SCROLL TEXTS ============ */
     .scroll-text {
       position: absolute;
       z-index: 20;
       opacity: 0;
-      transform: translateY(40px);
       will-change: transform, opacity;
-      transition: none;
       pointer-events: none;
     }
 
-    /* --- Texto 1: Titulo principal (izquierda) --- */
+    /* --- Texto 1: Titulo principal (izquierda, GRANDE) --- */
     .text-1 {
       left: 4vw;
       top: 50%;
-      transform: translateY(-50%);
-      max-width: 420px;
+      max-width: 500px;
     }
 
     .text-1 h1 {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(2.2rem, 4.5vw, 5rem);
+      font-size: clamp(3rem, 6vw, 7rem);
       font-weight: 900;
-      line-height: 1.05;
-      letter-spacing: -1px;
-      color: #4b5563;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));
+      line-height: 1;
+      letter-spacing: -2px;
+      color: #1a1a1a;
+      filter: drop-shadow(0 4px 15px rgba(0,0,0,0.2));
+      will-change: font-size;
     }
 
-    .text-1 h1 .gold {
-      background: linear-gradient(135deg, #4b5563 0%, #9ca3af 25%, #374151 50%, #6b7280 75%, #4b5563 100%);
-      background-size: 200% 200%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: shimmer 4s ease-in-out infinite;
+    .text-1 h1 .red {
+      color: #dc2626;
+      -webkit-text-fill-color: #dc2626;
     }
 
-    .text-1 h1 .explota {
-      display: inline-block;
-      font-style: italic;
-      background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 50%, #b38728 100%);
-      background-size: 200% 200%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: shimmer 3s ease-in-out infinite;
-      position: relative;
-    }
-
-    .text-1 h1 .explota::after {
-      content: 'EXPLOTAN!';
-      position: absolute;
-      top: 0; left: 0;
-      font-style: italic;
-      background: linear-gradient(135deg, #bf953f, #fcf6ba);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: blur(20px);
-      opacity: 0.3;
-      z-index: -1;
+    .text-1 h1 .black {
+      color: #0a0a0a;
+      -webkit-text-fill-color: #0a0a0a;
     }
 
     .text-1 .divider {
-      width: 50px;
-      height: 2px;
-      background: linear-gradient(90deg, #bf953f, #fcf6ba, #b38728);
+      width: 60px; height: 3px;
+      background: #dc2626;
       margin-top: 1.5rem;
     }
 
     .text-1 .subtitle {
-      margin-top: 1.5rem;
-      font-size: clamp(0.85rem, 1.2vw, 1.05rem);
+      margin-top: 1rem;
+      font-size: 1rem;
       font-weight: 300;
-      color: #6b7280;
-      line-height: 1.6;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      color: #4b5563;
+      text-shadow: 0 1px 4px rgba(255,255,255,0.5);
     }
 
-    /* --- Texto 2: Servicios (derecha) --- */
+    /* --- Texto 2: Viñetas servicios (izquierda) --- */
     .text-2 {
-      right: 5vw;
+      left: 4vw;
       top: 50%;
-      text-align: right;
-      max-width: 400px;
+      max-width: 450px;
     }
 
     .text-2 h2 {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(1.8rem, 3.5vw, 3.5rem);
+      font-size: clamp(1.8rem, 3vw, 3rem);
       font-weight: 900;
-      color: #374151;
-      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.1));
+      color: #fff;
+      margin-bottom: 1.5rem;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
     }
 
-    .text-2 p {
-      margin-top: 1rem;
-      font-size: clamp(0.85rem, 1.1vw, 1rem);
-      font-weight: 300;
-      color: #6b7280;
-      line-height: 1.7;
-    }
-
-    .text-2 .tag-list {
+    .text-2 ul {
+      list-style: none;
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 1.2rem;
-      justify-content: flex-end;
+      flex-direction: column;
+      gap: 14px;
     }
 
-    .text-2 .tag {
-      padding: 6px 14px;
-      background: rgba(0,0,0,0.05);
-      border-radius: 20px;
-      font-size: 0.8rem;
+    .text-2 li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: clamp(0.95rem, 1.3vw, 1.15rem);
       font-weight: 600;
-      color: #4b5563;
-      letter-spacing: 0.5px;
+      color: #fff;
+      filter: drop-shadow(0 1px 4px rgba(0,0,0,0.4));
+    }
+
+    .text-2 li .bullet {
+      width: 10px; height: 10px;
+      background: #dc2626;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .text-2 li span {
+      color: #fca5a5;
+      font-weight: 400;
+      margin-left: 4px;
     }
 
     /* --- Texto 3: CTA centro --- */
@@ -185,46 +169,43 @@
 
     .text-3 h2 {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(2rem, 4vw, 4rem);
+      font-size: clamp(2rem, 4.5vw, 4.5rem);
       font-weight: 900;
+      color: #fff;
       line-height: 1.1;
+      filter: drop-shadow(0 3px 10px rgba(0,0,0,0.5));
     }
 
-    .text-3 h2 .gold-cta {
-      background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728);
-      background-size: 200% 200%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: shimmer 3s ease-in-out infinite;
+    .text-3 h2 .red-cta {
+      color: #dc2626;
+      -webkit-text-fill-color: #dc2626;
     }
 
     .text-3 p {
-      margin-top: 1.2rem;
-      font-size: clamp(0.9rem, 1.2vw, 1.1rem);
-      color: #6b7280;
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      color: #d1d5db;
       font-weight: 300;
     }
 
     .text-3 .cta-btn {
       display: inline-block;
       margin-top: 2rem;
-      padding: 14px 40px;
-      background: linear-gradient(135deg, #bf953f, #b38728);
+      padding: 16px 44px;
+      background: #dc2626;
       color: #fff;
       text-decoration: none;
-      border-radius: 8px;
+      border-radius: 6px;
       font-weight: 700;
       font-size: 1rem;
-      letter-spacing: 1px;
-      box-shadow: 0 4px 20px rgba(179,135,40,0.3);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      box-shadow: 0 4px 25px rgba(220,38,38,0.4);
       pointer-events: all;
+      transition: transform 0.2s;
     }
 
-    @keyframes shimmer {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
+    .text-3 .cta-btn:hover { transform: scale(1.05); }
 
     /* ============ LOADER ============ */
     .loader {
@@ -239,22 +220,18 @@
       z-index: 9999;
       transition: opacity 0.6s ease;
     }
-
     .loader.hidden { opacity: 0; pointer-events: none; }
 
     .loader-text {
       font-family: 'Playfair Display', serif;
       font-size: 1.1rem;
-      background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: #1a1a1a;
       margin-bottom: 20px;
       letter-spacing: 4px;
     }
 
     .loader-bar-bg {
-      width: 180px; height: 2px;
+      width: 180px; height: 3px;
       background: #e5e7eb;
       border-radius: 2px;
       overflow: hidden;
@@ -262,7 +239,7 @@
 
     .loader-bar {
       height: 100%; width: 0%;
-      background: linear-gradient(90deg, #bf953f, #fcf6ba, #b38728);
+      background: #dc2626;
       border-radius: 2px;
       transition: width 0.1s;
     }
@@ -314,7 +291,7 @@
       position: fixed;
       top: 0; left: 0;
       height: 2px;
-      background: linear-gradient(90deg, #bf953f, #fcf6ba, #b38728);
+      background: #dc2626;
       z-index: 1000;
       width: 0%;
     }
@@ -327,58 +304,56 @@
         text-align: center !important;
         max-width: 90vw;
       }
-      .text-2 .tag-list { justify-content: center; }
+      .text-2 ul { align-items: center; }
     }
   </style>
 </head>
 <body>
 
-  <!-- LOADER -->
   <div class="loader" id="loader">
     <div class="loader-text">M&M WEB AGENCY</div>
-    <div class="loader-bar-bg">
-      <div class="loader-bar" id="loaderBar"></div>
-    </div>
+    <div class="loader-bar-bg"><div class="loader-bar" id="loaderBar"></div></div>
   </div>
 
   <div class="progress-bar" id="progressBar"></div>
 
-  <!-- HERO -->
   <header class="hero" id="hero">
     <div class="hero-layout">
       <div class="canvas-wrapper">
         <canvas id="canvas"></canvas>
       </div>
 
-      <!-- TEXTO 1: Titulo (0% - 30%) -->
+      <!-- Overlay oscuro que aparece con scroll -->
+      <div class="overlay" id="overlay"></div>
+
+      <!-- TEXTO 1: Titulo GRANDE (0% - 30%) -->
       <div class="scroll-text text-1" id="text1">
         <h1>
-          <span class="gold">Creamos</span><br>
-          <span class="gold">sitios web que</span><br>
-          <span class="explota">EXPLOTAN!</span>
+          <span class="black">Creamos</span><br>
+          <span class="black">sitios web que</span><br>
+          <span class="red">EXPLOTAN!</span>
         </h1>
         <div class="divider"></div>
         <p class="subtitle">Desarrollo web premium para marcas que quieren destacar</p>
       </div>
 
-      <!-- TEXTO 2: Servicios (30% - 65%) -->
+      <!-- TEXTO 2: Viñetas (35% - 65%) -->
       <div class="scroll-text text-2" id="text2">
-        <h2>Diseño que<br>convierte</h2>
-        <p>Sitios rapidos, modernos y optimizados para generar resultados reales</p>
-        <div class="tag-list">
-          <span class="tag">Landing Pages</span>
-          <span class="tag">E-Commerce</span>
-          <span class="tag">Apps Web</span>
-          <span class="tag">SEO</span>
-          <span class="tag">Branding</span>
-        </div>
+        <h2>Lo que hacemos</h2>
+        <ul>
+          <li><div class="bullet"></div>Landing Pages <span>de alto impacto</span></li>
+          <li><div class="bullet"></div>E-Commerce <span>que vende</span></li>
+          <li><div class="bullet"></div>Apps Web <span>a la medida</span></li>
+          <li><div class="bullet"></div>SEO & Branding <span>que posiciona</span></li>
+          <li><div class="bullet"></div>Automatizacion <span>inteligente</span></li>
+        </ul>
       </div>
 
-      <!-- TEXTO 3: CTA (65% - 100%) -->
+      <!-- TEXTO 3: CTA (70% - 100%) -->
       <div class="scroll-text text-3" id="text3">
-        <h2><span class="gold-cta">Tu proximo proyecto<br>empieza aqui</span></h2>
+        <h2>Tu proximo proyecto<br><span class="red-cta">empieza aqui</span></h2>
         <p>Agenda una llamada y llevemos tu marca al siguiente nivel</p>
-        <a href="#contacto" class="cta-btn">AGENDAR LLAMADA</a>
+        <a href="#contacto" class="cta-btn">Agendar Llamada</a>
       </div>
     </div>
   </header>
@@ -391,18 +366,17 @@
   <div class="scroll-spacer"></div>
 
   <script>
-    // ============ CONFIG ============
     const FRAME_COUNT = 121;
     const FRAME_PATH = 'assets/frames/frame_';
     const FRAME_EXT = '.webp';
 
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
+    const overlay = document.getElementById('overlay');
     const scrollIndicator = document.getElementById('scrollIndicator');
     const progressBar = document.getElementById('progressBar');
     const loader = document.getElementById('loader');
     const loaderBar = document.getElementById('loaderBar');
-
     const text1 = document.getElementById('text1');
     const text2 = document.getElementById('text2');
     const text3 = document.getElementById('text3');
@@ -439,15 +413,11 @@
 
     // ============ SCROLL ============
     const TOTAL_SCROLL = () => document.querySelector('.scroll-spacer').offsetHeight - window.innerHeight;
-
-    let currentFrame = 0;
-    let targetFrame = 0;
-    let smoothFrame = 0;
-    let externalProgress = 0;
+    let currentFrame = 0, targetFrame = 0, smoothFrame = 0, externalProgress = 0;
 
     function onScroll() {
-      const scrollFraction = window.scrollY / TOTAL_SCROLL();
-      targetFrame = Math.min(FRAME_COUNT - 1, Math.floor(scrollFraction * FRAME_COUNT));
+      const f = window.scrollY / TOTAL_SCROLL();
+      targetFrame = Math.min(FRAME_COUNT - 1, Math.floor(f * FRAME_COUNT));
     }
 
     window.addEventListener('message', (e) => {
@@ -461,37 +431,25 @@
     function lerp(a, b, t) { return a + (b - a) * t; }
 
     // ============ TEXT ANIMATION ============
-    function animateText(el, p, enterStart, enterEnd, exitStart, exitEnd, fromX) {
-      // Enter: fade in + slide
+    function animateText(el, p, enterStart, enterEnd, exitStart, exitEnd, isCentered) {
       const enterT = clamp((p - enterStart) / (enterEnd - enterStart), 0, 1);
-      // Exit: fade out + slide up
       const exitT = clamp((p - exitStart) / (exitEnd - exitStart), 0, 1);
 
-      let opacity = 0;
-      let y = 40;
-      let x = fromX || 0;
+      const easeIn = 1 - Math.pow(1 - enterT, 3);
+      const easeOut = exitT * exitT;
 
-      if (enterT > 0 && exitT < 1) {
-        // Easing suave
-        const easeIn = 1 - Math.pow(1 - enterT, 3);
-        const easeOut = exitT * exitT;
+      const opacity = enterT > 0 ? easeIn * (1 - easeOut) : 0;
+      const y = (1 - easeIn) * 50 + easeOut * -50;
 
-        opacity = easeIn * (1 - easeOut);
-        y = (1 - easeIn) * 40 + easeOut * -40;
-        x = fromX ? (1 - easeIn) * fromX : 0;
-      }
+      // Escala: empieza chico, crece, luego se hace mas grande al salir
+      const scale = lerp(0.85, 1, easeIn);
 
       el.style.opacity = opacity;
-      el.style.transform = `translate(${x}px, ${y}px)`;
-      // Centrado especial para text-3
-      if (el === text3) {
-        el.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
-      }
-      if (el === text2) {
-        el.style.transform = `translateY(calc(-50% + ${y}px))`;
-      }
-      if (el === text1) {
-        el.style.transform = `translateY(calc(-50% + ${y}px))`;
+
+      if (isCentered) {
+        el.style.transform = `translate(-50%, calc(-50% + ${y}px)) scale(${scale})`;
+      } else {
+        el.style.transform = `translateY(calc(-50% + ${y}px)) scale(${scale})`;
       }
     }
 
@@ -516,21 +474,30 @@
 
       const p = isInIframe ? externalProgress : clamp(window.scrollY / TOTAL_SCROLL(), 0, 1);
 
-      // Progress bar
       progressBar.style.width = (p * 100) + '%';
-
-      // Scroll indicator
       scrollIndicator.style.opacity = clamp(1 - p * 8, 0, 0.7);
 
-      // === TEXTOS: aparecen y desaparecen en fases ===
-      // Texto 1: entra 0%-8%, visible hasta 25%, sale 25%-35%
-      animateText(text1, p, 0.0, 0.08, 0.25, 0.35);
+      // Overlay: oscurece la imagen conforme scrolleas (sutil)
+      const overlayOpacity = clamp((p - 0.25) / 0.3, 0, 0.55);
+      overlay.style.opacity = overlayOpacity;
 
-      // Texto 2: entra 35%-45%, visible hasta 60%, sale 60%-70%
-      animateText(text2, p, 0.35, 0.45, 0.60, 0.70);
+      // Texto 1: grande, entra rapido, sale al 30%
+      animateText(text1, p, 0.0, 0.06, 0.25, 0.35, false);
 
-      // Texto 3: entra 70%-80%, visible hasta 95%, sale 95%-100%
-      animateText(text3, p, 0.70, 0.80, 0.95, 1.0);
+      // Texto 2: vinetas, entra al 35%, sale al 65%
+      animateText(text2, p, 0.35, 0.45, 0.60, 0.70, false);
+
+      // Texto 3: CTA centrado, entra al 70%, se queda
+      animateText(text3, p, 0.70, 0.82, 0.95, 1.0, true);
+
+      // Texto 1 escala extra: mientras mas scroll, mas grande ligeramente
+      const t1Scale = lerp(1, 1.15, clamp(p / 0.25, 0, 1));
+      const t1Enter = clamp(p / 0.06, 0, 1);
+      const t1Exit = clamp((p - 0.25) / 0.1, 0, 1);
+      const t1opacity = (1 - Math.pow(1 - t1Enter, 3)) * (1 - t1Exit * t1Exit);
+      const t1y = (1 - (1 - Math.pow(1 - t1Enter, 3))) * 50 + t1Exit * t1Exit * -50;
+      text1.style.opacity = t1opacity;
+      text1.style.transform = `translateY(calc(-50% + ${t1y}px)) scale(${t1Scale})`;
 
       requestAnimationFrame(render);
     }
