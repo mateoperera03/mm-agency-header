@@ -369,15 +369,6 @@
       <!-- Overlay oscuro que aparece con scroll -->
       <div class="overlay" id="overlay"></div>
 
-      <!-- Lineas doradas decorativas -->
-      <div class="gold-line horizontal top"></div>
-      <div class="gold-line horizontal bottom"></div>
-      <div class="gold-line vertical left"></div>
-      <div class="gold-line vertical right"></div>
-      <div class="gold-corner tl"></div>
-      <div class="gold-corner tr"></div>
-      <div class="gold-corner bl"></div>
-      <div class="gold-corner br"></div>
 
       <!-- TEXTO 1: Titulo GRANDE (0% - 30%) -->
       <div class="scroll-text text-1" id="text1">
@@ -455,9 +446,12 @@
         for (let p = 0; p < d.length; p += 4) {
           const r = d[p], g = d[p + 1], b = d[p + 2];
           const minc = Math.min(r, g, b);
-          if (minc > 215) {
-            const t = Math.min((minc - 215) / 30, 1);
-            d[p + 3] = Math.round(255 * (1 - t));
+          const maxc = Math.max(r, g, b);
+          const sat = maxc - minc;
+          // near-white = high brightness + low saturation (no color)
+          if (minc > 170 && sat < 40) {
+            const t = Math.min((minc - 170) / 60, 1);
+            d[p + 3] = Math.round(d[p + 3] * (1 - t));
           }
         }
         tctx.putImageData(data, 0, 0);
