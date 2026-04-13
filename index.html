@@ -434,53 +434,26 @@
 
     function padNumber(n) { return String(n).padStart(4, '0'); }
 
-    function processFrame(img) {
-      const tmp = document.createElement('canvas');
-      tmp.width = img.width;
-      tmp.height = img.height;
-      const tctx = tmp.getContext('2d');
-      tctx.drawImage(img, 0, 0);
-      try {
-        const data = tctx.getImageData(0, 0, img.width, img.height);
-        const d = data.data;
-        for (let p = 0; p < d.length; p += 4) {
-          const r = d[p], g = d[p + 1], b = d[p + 2];
-          const minc = Math.min(r, g, b);
-          const maxc = Math.max(r, g, b);
-          const sat = maxc - minc;
-          // near-white = high brightness + low saturation (no color)
-          if (minc > 170 && sat < 40) {
-            const t = Math.min((minc - 170) / 60, 1);
-            d[p + 3] = Math.round(d[p + 3] * (1 - t));
-          }
-        }
-        tctx.putImageData(data, 0, 0);
-      } catch (e) {}
-      return tmp;
-    }
-
     function preloadFrames() {
       for (let i = 1; i <= FRAME_COUNT; i++) {
         const idx = i - 1;
         const img = new Image();
         img.src = FRAME_PATH + padNumber(i) + FRAME_EXT;
         img.onload = () => {
-          const processed = processFrame(img);
-          frames[idx] = processed;
           loadedCount++;
           loaderBar.style.width = (loadedCount / FRAME_COUNT * 100) + '%';
           if (idx === 0) {
-            canvas.width = processed.width;
-            canvas.height = processed.height;
+            canvas.width = img.width;
+            canvas.height = img.height;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(processed, 0, 0);
+            ctx.drawImage(img, 0, 0);
           }
           if (loadedCount === FRAME_COUNT) {
             allLoaded = true;
             setTimeout(() => loader.classList.add('hidden'), 300);
           }
         };
-        frames.push(null);
+        frames.push(img);
       }
     }
 
