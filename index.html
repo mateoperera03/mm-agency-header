@@ -434,6 +434,41 @@
 
     function padNumber(n) { return String(n).padStart(4, '0'); }
 
+    let imgNaturalW = 0, imgNaturalH = 0;
+
+    function resizeCanvas() {
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
+      drawCurrent();
+    }
+
+    function drawCurrent() {
+      if (!imgNaturalW) return;
+      const img = frames[currentFrame];
+      if (!img) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // object-fit: cover style draw (fill canvas, crop overflow, preserve aspect)
+      const canvasRatio = canvas.width / canvas.height;
+      const imgRatio = imgNaturalW / imgNaturalH;
+      let sx, sy, sw, sh;
+      if (imgRatio > canvasRatio) {
+        // image wider -> crop sides
+        sh = imgNaturalH;
+        sw = imgNaturalH * canvasRatio;
+        sx = (imgNaturalW - sw) / 2;
+        sy = 0;
+      } else {
+        // image taller -> crop top/bottom
+        sw = imgNaturalW;
+        sh = imgNaturalW / canvasRatio;
+        sx = 0;
+        sy = (imgNaturalH - sh) / 2;
+      }
+      ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+    }
+
     function preloadFrames() {
       for (let i = 1; i <= FRAME_COUNT; i++) {
         const idx = i - 1;
@@ -443,10 +478,9 @@
           loadedCount++;
           loaderBar.style.width = (loadedCount / FRAME_COUNT * 100) + '%';
           if (idx === 0) {
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, 0, 0);
+            imgNaturalW = img.width;
+            imgNaturalH = img.height;
+            resizeCanvas();
           }
           if (loadedCount === FRAME_COUNT) {
             allLoaded = true;
@@ -511,11 +545,7 @@
 
       if (frameIndex !== currentFrame) {
         currentFrame = frameIndex;
-        const img = frames[frameIndex];
-        if (img) {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          ctx.drawImage(img, 0, 0);
-        }
+        drawCurrent();
       }
 
       const p = isInIframe ? externalProgress : clamp(window.scrollY / TOTAL_SCROLL(), 0, 1);
@@ -557,6 +587,7 @@
       document.body.style.height = '100vh';
     }
     window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', resizeCanvas);
     preloadFrames();
     render();
   </script>
