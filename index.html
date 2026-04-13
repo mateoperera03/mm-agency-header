@@ -412,7 +412,7 @@
   <script>
     const FRAME_COUNT = 240;
     const FRAME_PATH = 'assets/frames/frame_';
-    const FRAME_VERSION = '20';
+    const FRAME_VERSION = '21';
     const FRAME_EXT = '.webp?v=' + FRAME_VERSION;
 
     const canvas = document.getElementById('canvas');
@@ -512,6 +512,8 @@
     function lerp(a, b, t) { return a + (b - a) * t; }
 
     // ============ TEXT ANIMATION ============
+    const isMobile = () => window.innerWidth <= 768;
+
     function animateText(el, p, enterStart, enterEnd, exitStart, exitEnd, isCentered) {
       const enterT = clamp((p - enterStart) / (enterEnd - enterStart), 0, 1);
       const exitT = clamp((p - exitStart) / (exitEnd - exitStart), 0, 1);
@@ -522,12 +524,11 @@
       const opacity = enterT > 0 ? easeIn * (1 - easeOut) : 0;
       const y = (1 - easeIn) * 50 + easeOut * -50;
 
-      // Escala: empieza chico, crece, luego se hace mas grande al salir
       const scale = lerp(0.85, 1, easeIn);
 
       el.style.opacity = opacity;
 
-      if (isCentered) {
+      if (isCentered || isMobile()) {
         el.style.transform = `translate(-50%, calc(-50% + ${y}px)) scale(${scale})`;
       } else {
         el.style.transform = `translateY(calc(-50% + ${y}px)) scale(${scale})`;
@@ -574,7 +575,9 @@
       const t1opacity = (1 - Math.pow(1 - t1Enter, 3)) * (1 - t1Exit * t1Exit);
       const t1y = (1 - (1 - Math.pow(1 - t1Enter, 3))) * 50 + t1Exit * t1Exit * -50;
       text1.style.opacity = t1opacity;
-      text1.style.transform = `translateY(calc(-50% + ${t1y}px)) scale(${t1Scale})`;
+      text1.style.transform = isMobile()
+        ? `translate(-50%, calc(-50% + ${t1y}px)) scale(${t1Scale})`
+        : `translateY(calc(-50% + ${t1y}px)) scale(${t1Scale})`;
 
       requestAnimationFrame(render);
     }
